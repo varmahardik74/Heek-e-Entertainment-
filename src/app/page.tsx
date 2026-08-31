@@ -1,100 +1,23 @@
 import Link from "next/link";
 import { services } from "@/lib/services";
-import CaseStudies from "@/components/CaseStudies";
-import Testimonials from "@/components/Testimonials";
+import { caseStudies } from "@/lib/case-studies";
+
+const faqs = [
+  ["What kind of brands do you work with?", "We partner with ambitious teams that need sharper positioning, stronger creative, or campaigns that move people to act."],
+  ["Can we start with one service?", "Absolutely. A focused first project is often the best way to find the right rhythm together."],
+  ["How do you approach a new project?", "We start with the brief, audience, and opportunity. Then we shape the strategy and creative system around what will matter most."],
+];
 
 export default function HomePage() {
-  return (
-    <>
-      <section>
-        <h1 className="text-3xl font-semibold">
-          Influencer marketing that puts your brand in front of the right
-          audience
-        </h1>
-        <p className="mt-3 max-w-2xl text-gray-700">
-          We help brands reach the people who matter through paid media,
-          creative content, and a clear, consistent identity. From first
-          impression to repeat purchase, we build the pieces that make
-          campaigns work.
-        </p>
-        <Link
-          href="/contact"
-          className="mt-4 inline-block rounded bg-black px-4 py-2 text-sm text-white"
-        >
-          Get in touch
-        </Link>
-      </section>
-
-      <section className="mt-12">
-        <h2 className="text-2xl font-semibold">Services</h2>
-        <p className="mt-2 max-w-2xl text-gray-700">
-          A focused set of capabilities to take a brand from unknown to
-          unmissable. Explore the full list on the{" "}
-          <Link href="/services" className="underline">
-            services page
-          </Link>
-          .
-        </p>
-        <ul className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((service) => (
-            <li
-              key={service.slug}
-              className="rounded border border-gray-200 p-4"
-            >
-              <h3 className="font-semibold">
-                <Link href={`/services/${service.slug}`} className="underline">
-                  {service.title}
-                </Link>
-              </h3>
-              <p className="mt-1 text-sm text-gray-600">
-                {service.shortDescription}
-              </p>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="mt-12">
-        <h2 className="text-2xl font-semibold">Work</h2>
-        <p className="mt-2 max-w-2xl text-gray-700">
-          A selection of recent projects. See the full index on the{" "}
-          <Link href="/case-studies" className="underline">
-            case studies page
-          </Link>
-          .
-        </p>
-        <div className="mt-4">
-          <CaseStudies />
-        </div>
-      </section>
-
-      <section className="mt-12">
-        <h2 className="text-2xl font-semibold">What clients say</h2>
-        <p className="mt-2 max-w-2xl text-gray-700">
-          Kind words from the brands we work with. Read more on the{" "}
-          <Link href="/testimonials" className="underline">
-            testimonials page
-          </Link>
-          .
-        </p>
-        <div className="mt-4">
-          <Testimonials />
-        </div>
-      </section>
-
-      <section className="mt-12 rounded border border-gray-200 p-6">
-        <h2 className="text-2xl font-semibold">Ready to get started?</h2>
-        <p className="mt-2 max-w-2xl text-gray-700">
-          Tell us about your brand and what you want to achieve. We&rsquo;ll
-          figure out the right mix of services from there.
-        </p>
-        <Link
-          href="/contact"
-          className="mt-4 inline-block rounded bg-black px-4 py-2 text-sm text-white"
-        >
-          Contact us
-        </Link>
-      </section>
-    </>
-  );
+  return <div>
+    <section className="container-shell grid min-h-[calc(100vh-5rem)] items-center gap-12 py-20 md:grid-cols-[1.1fr_.9fr] md:py-28">
+      <div className="animate-rise"><p className="eyebrow">Independent creative partner</p><h1 className="display mt-6 max-w-4xl text-6xl font-black md:text-8xl">Make your brand <span className="text-primary">unmissable.</span></h1><p className="mt-8 max-w-xl text-lg leading-8 text-muted-foreground">Heek-E brings strategy, content, and performance together so your brand can show up with clarity — and stay top of mind.</p><div className="mt-9 flex flex-wrap gap-3"><Link href="/contact" className="rounded-full bg-primary px-6 py-4 font-bold text-primary-foreground">Start a conversation ↗</Link><Link href="/services" className="rounded-full border px-6 py-4 font-bold">Explore services</Link></div></div>
+      <div className="relative min-h-80 overflow-hidden rounded-[2rem] bg-primary p-8 text-primary-foreground md:min-h-[30rem]"><div className="absolute right-8 top-8 size-24 rounded-full bg-accent" /><div className="absolute bottom-10 left-8 max-w-xs"><p className="font-mono text-xs uppercase tracking-[.18em] text-accent">The brief</p><p className="mt-4 text-3xl font-bold leading-tight">Good ideas deserve a bigger audience.</p></div><div className="absolute bottom-8 right-8 font-mono text-xs text-primary-foreground/50">HEEK-E / 001</div></div>
+    </section>
+    <section className="border-y bg-muted/40"><div className="container-shell flex flex-wrap items-center justify-between gap-6 py-6"><p className="eyebrow">Built for the next move</p><p className="max-w-2xl text-sm leading-6 text-muted-foreground">Paid media. Creative content. Brand identity. One focused partner for the pieces that make campaigns work.</p></div></section>
+    <section className="container-shell py-24"><div className="grid gap-10 md:grid-cols-[.7fr_1.3fr]"><div><p className="eyebrow">What we do</p><h2 className="display mt-4 text-4xl font-black md:text-6xl">Clarity creates momentum.</h2></div><p className="max-w-2xl text-xl leading-8 text-muted-foreground">From the first impression to the next purchase, we help brands build the right story, make it look impossible to ignore, and put it in front of the people who matter.</p></div><div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{services.map((service, index) => <Link key={service.slug} href={`/services/${service.slug}`} className="group rounded-[1.25rem] border bg-card p-6 transition hover:-translate-y-1 hover:border-primary"><p className="font-mono text-xs text-muted-foreground">0{index + 1}</p><h3 className="mt-12 text-xl font-bold">{service.title} <span className="float-right transition group-hover:translate-x-1">↗</span></h3><p className="mt-3 text-sm leading-6 text-muted-foreground">{service.shortDescription}</p></Link>)}</div></section>
+    <section className="bg-primary text-primary-foreground"><div className="container-shell grid gap-10 py-24 md:grid-cols-[1fr_.8fr] md:py-32"><div><p className="eyebrow text-primary-foreground/60">Selected work</p><h2 className="display mt-4 text-5xl font-black md:text-7xl">Work that earns attention.</h2></div><div className="flex items-end"><p className="leading-7 text-primary-foreground/70">We&apos;re building a growing library of collaborations. Case studies will be shared here as projects are ready to be made public.</p></div></div><div className="container-shell pb-24">{caseStudies.length ? <div /> : <div className="rounded-[1.5rem] border border-primary-foreground/20 p-8"><p className="font-mono text-xs uppercase tracking-[.18em] text-accent">Portfolio update</p><p className="mt-4 text-2xl font-bold">Selected case studies — coming soon.</p></div>}</div></section>
+    <section className="container-shell grid gap-16 py-24 md:grid-cols-[.8fr_1.2fr]"><div><p className="eyebrow">Questions, answered</p><h2 className="display mt-4 text-5xl font-black">Let&apos;s make it simple.</h2></div><div className="flex flex-col">{faqs.map(([question, answer]) => <details key={question} className="group border-t py-5"><summary className="cursor-pointer list-none pr-8 text-lg font-bold">{question}<span className="float-right text-2xl font-normal transition group-open:rotate-45">+</span></summary><p className="mt-3 max-w-xl leading-7 text-muted-foreground">{answer}</p></details>)}</div></section>
+    <section className="container-shell pb-24"><div className="rounded-[2rem] bg-accent p-8 md:p-16"><p className="eyebrow">Your next move</p><h2 className="display mt-5 max-w-3xl text-5xl font-black md:text-7xl">Have a good problem? Let&apos;s solve it well.</h2><Link href="/contact" className="mt-10 inline-block rounded-full bg-primary px-6 py-4 font-bold text-primary-foreground">Tell us about it ↗</Link></div></section>
+  </div>;
 }

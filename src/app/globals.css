@@ -1,26 +1,45 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f5f6f2;
+  --foreground: #14231f;
+  --surface: #ffffff;
+  --muted: #dfe7df;
+  --muted-foreground: #617069;
+  --primary: #173b32;
+  --primary-foreground: #f5f6f2;
+  --accent: #c8ef68;
+  --accent-foreground: #14231f;
+  --border: #cfd9d0;
+  --radius: 1.25rem;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--surface);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+* { border-color: var(--border); }
+html { scroll-behavior: smooth; background: var(--background); }
+body { background: var(--background); color: var(--foreground); font-family: var(--font-geist-sans), sans-serif; }
+::selection { background: var(--accent); color: var(--accent-foreground); }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+.container-shell { width: min(100% - 2rem, 1180px); margin-inline: auto; }
+.display { letter-spacing: -0.065em; line-height: .94; }
+.eyebrow { color: var(--muted-foreground); font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.grid-line { background-image: linear-gradient(to right, rgba(23,59,50,.08) 1px, transparent 1px); background-size: 25% 100%; }
+
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+.animate-rise { animation: rise .7s cubic-bezier(.2,.8,.2,1) both; }
+
+@media (min-width: 768px) { .container-shell { width: min(100% - 4rem, 1180px); } }
