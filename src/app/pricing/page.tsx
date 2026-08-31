@@ -1,29 +1,8 @@
 import Link from "next/link";
+import { EditorialCta, EditorialPage } from "@/components/EditorialPage";
+
+const principles = ["Scope around the real goal", "Keep the plan clear and useful", "Build momentum, not busywork"];
 
 export default function PricingPage() {
-  return (
-    <section>
-      <h1 className="text-3xl font-semibold">Pricing</h1>
-      <p className="mt-3 max-w-2xl text-gray-700">
-        Every brand is different, so we don&rsquo;t publish fixed price lists or
-        one-size-fits-all tiers. Instead, we scope each engagement around your
-        goals, channels, and timeline.
-      </p>
-
-      <h2 className="mt-8 text-2xl font-semibold">
-        Book a call for custom pricing
-      </h2>
-      <p className="mt-3 max-w-2xl text-gray-700">
-        Tell us what you&rsquo;re working on and we&rsquo;ll put together a
-        tailored proposal. There&rsquo;s no obligation &mdash; just a
-        conversation about what fits.
-      </p>
-      <Link
-        href="/contact"
-        className="mt-4 inline-block rounded bg-black px-4 py-2 text-sm text-white"
-      >
-        Book a call
-      </Link>
-    </section>
-  );
+  return <EditorialPage eyebrow="WORKING TOGETHER / 03" title={<>The right scope<br />for the <em>real goal.</em></>} intro="Every brand is different, so we do not publish fixed price lists or one-size-fits-all tiers. We scope each engagement around your goals, channels, and timeline."><section className="container-shell editorial-section pricing-grid"><div><p className="section-kicker accent-text">OUR APPROACH</p><h2 className="display-heading">Clear from<br /><em>day one.</em></h2></div><div className="principles">{principles.map((item, index) => <div className="principle" key={item}><span>0{index + 1}</span><h3>{item}</h3><p>A tailored proposal shaped around what will make the biggest difference.</p></div>)}</div></section><div className="container-shell pricing-callout"><p className="section-kicker">CUSTOM PROJECTS</p><h2>Bring us the brief.<br /><em>We will bring the shape.</em></h2><Link className="hero-cta" href="/contact">Book a call <span aria-hidden>↗</span></Link></div><EditorialCta label="Talk through your project" /></EditorialPage>;
 }

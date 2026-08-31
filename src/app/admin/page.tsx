@@ -152,7 +152,7 @@ export default function AdminPage() {
   }
 
   return (
-    <section>
+    <section className="container-shell py-12 md:py-20">
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-3xl font-semibold">Admin</h1>
