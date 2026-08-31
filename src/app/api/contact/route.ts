@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { randomUUID } from "node:crypto";
 import { getSupabaseClient } from "@/lib/supabase";
 
 const contactSchema = z.object({
@@ -54,21 +55,35 @@ export async function POST(req: NextRequest) {
 
   const { name, email, company, message } = parsed.data;
 
-  const supabase = getSupabaseClient();
+  try {
+    const supabase = getSupabaseClient();
 
-  const { data, error } = await supabase
-    .from("contact_submissions")
-    .insert({ name, email, company, message })
-    .select("id")
-    .single();
+    // Generate the UUID here so we can return the created id. Note: we must
+    // NOT use .select() after .insert() here. "anon" has no SELECT privilege or
+    // policy, so .insert().select("id") would make PostgREST emit
+    // "INSERT ... RETURNING id", which requires SELECT and is rejected with
+    // 42501 even though the row is inserted. Inserting with an explicit id
+    // keeps the security model intact and lets us echo the id back.
+    const id = randomUUID();
 
-  if (error || !data) {
-    console.error("Contact insert failed:", error);
+    const { error } = await supabase
+      .from("contact_submissions")
+      .insert({ id, name, email, company, message });
+
+    if (error) {
+      console.error("Contact insert failed:", error);
+      return NextResponse.json(
+        { error: "Something went wrong. Please try again later." },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({ id }, { status: 201 });
+  } catch (err) {
+    console.error("Contact insert failed:", err);
     return NextResponse.json(
       { error: "Something went wrong. Please try again later." },
       { status: 500 }
     );
   }
-
-  return NextResponse.json({ id: data.id }, { status: 201 });
 }

@@ -12,16 +12,6 @@ export async function PATCH(
 ) {
   const { id } = await params;
 
-  const supabase = await createSupabaseServerClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   let body: unknown;
   try {
     body = await req.json();
@@ -40,26 +30,44 @@ export async function PATCH(
     );
   }
 
-  const { data, error } = await supabase
-    .from("contact_submissions")
-    .update({ status: parsed.data.status })
-    .eq("id", id)
-    .select("id, status");
+  try {
+    const supabase = await createSupabaseServerClient();
 
-  if (error) {
-    console.error("Submission update failed:", error);
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { data, error } = await supabase
+      .from("contact_submissions")
+      .update({ status: parsed.data.status })
+      .eq("id", id)
+      .select("id, status");
+
+    if (error) {
+      console.error("Submission update failed:", error);
+      return NextResponse.json(
+        { error: "Something went wrong. Please try again later." },
+        { status: 500 }
+      );
+    }
+
+    if (!data || data.length === 0) {
+      return NextResponse.json(
+        { error: "Submission not found." },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({ submission: data[0] });
+  } catch (err) {
+    console.error("Submission update failed:", err);
     return NextResponse.json(
       { error: "Something went wrong. Please try again later." },
       { status: 500 }
     );
   }
-
-  if (!data || data.length === 0) {
-    return NextResponse.json(
-      { error: "Submission not found." },
-      { status: 404 }
-    );
-  }
-
-  return NextResponse.json({ submission: data[0] });
 }

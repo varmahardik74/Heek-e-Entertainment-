@@ -1,15 +1,34 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const res = NextResponse.next();
+
+  const { pathname } = req.nextUrl;
+  const isAdminPage =
+    pathname.startsWith("/admin") && pathname !== "/admin/login";
+  const isAdminApi = pathname.startsWith("/api/admin");
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  // If env vars are missing the app cannot function; let routes surface the
-  // error rather than guessing. Middleware still passes through.
+  // Fail closed: if config is missing, deny protected access loudly rather
+  // than silently passing through (which would disable the auth gate).
   if (!supabaseUrl || !supabaseAnonKey) {
+    console.error(
+      "[proxy] Supabase env vars missing: NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY are not set. Denying protected access."
+    );
+    if (isAdminApi) {
+      return NextResponse.json(
+        { error: "Server misconfiguration: authentication is unavailable" },
+        { status: 500 }
+      );
+    }
+    if (isAdminPage) {
+      const redirectUrl = req.nextUrl.clone();
+      redirectUrl.pathname = "/admin/login";
+      return NextResponse.redirect(redirectUrl);
+    }
     return res;
   }
 
@@ -30,11 +49,6 @@ export async function middleware(req: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  const { pathname } = req.nextUrl;
-  const isAdminPage =
-    pathname.startsWith("/admin") && pathname !== "/admin/login";
-  const isAdminApi = pathname.startsWith("/api/admin");
 
   if (!user && (isAdminPage || isAdminApi)) {
     if (isAdminApi) {
