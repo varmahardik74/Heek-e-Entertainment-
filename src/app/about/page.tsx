@@ -1,30 +1,5 @@
+import { EditorialCta, EditorialPage, ReplaceableVisual } from "@/components/EditorialPage";
+
 export default function AboutPage() {
-  return (
-    <section>
-      <h1 className="text-3xl font-semibold">About</h1>
-
-      <h2 className="mt-6 text-2xl font-semibold">Our story</h2>
-      <p className="mt-3 max-w-2xl text-gray-700">
-        We started as a small team with a simple belief: great marketing should
-        be clear, consistent, and built around the audience &mdash; not the
-        algorithm of the week. Over time we pulled together the disciplines that
-        brands actually need under one roof: paid media, creative, and brand.
-      </p>
-
-      <h2 className="mt-8 text-2xl font-semibold">What we do</h2>
-      <p className="mt-3 max-w-2xl text-gray-700">
-        We help brands show up in the right places with the right message. That
-        can mean a single service &mdash; like a poster series or a PPC
-        campaign &mdash; or a longer engagement that ties several capabilities
-        together into one coherent push.
-      </p>
-
-      <h2 className="mt-8 text-2xl font-semibold">How we work</h2>
-      <p className="mt-3 max-w-2xl text-gray-700">
-        We keep things transparent and collaborative. Every engagement starts
-        with understanding your brand and your goals, then building a plan that
-        fits &mdash; no inflated promises, no jargon for its own sake.
-      </p>
-    </section>
-  );
+  return <EditorialPage eyebrow="ABOUT HEEK-E / 02" title={<>Good work starts<br />with a <em>point of view.</em></>} intro="We are a small, focused team bringing strategy, creative, and distribution together for brands with somewhere meaningful to go."><section className="container-shell editorial-section about-grid"><ReplaceableVisual label="TEAM / BRAND IMAGE" /><div className="editorial-copy"><p className="section-kicker">OUR STORY</p><h2>Build the signal.<br /><em>Keep the human.</em></h2><p>We started with a simple belief: great marketing should be clear, consistent, and built around the audience — not the algorithm of the week.</p><p>Over time we pulled together the disciplines brands actually need under one roof. The result is a partner that can see the big picture and still care about the last detail.</p><p>Every engagement starts with understanding your brand and your goals, then building a plan that fits. No inflated promises. No jargon for its own sake.</p></div></section><EditorialCta /></EditorialPage>;
 }

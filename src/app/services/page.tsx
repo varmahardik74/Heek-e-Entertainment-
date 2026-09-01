@@ -1,29 +1,7 @@
 import Link from "next/link";
 import { services } from "@/lib/services";
+import { EditorialCta, EditorialPage } from "@/components/EditorialPage";
 
 export default function ServicesPage() {
-  return (
-    <section>
-      <h1 className="text-3xl font-semibold">Services</h1>
-      <p className="mt-3 max-w-2xl text-gray-700">
-        We offer a focused set of marketing capabilities, each available on its
-        own or combined into a broader campaign. Explore each service to see
-        what&rsquo;s included.
-      </p>
-      <ul className="mt-6 grid gap-4 sm:grid-cols-2">
-        {services.map((service) => (
-          <li key={service.slug} className="rounded border border-gray-200 p-4">
-            <h2 className="text-xl font-semibold">
-              <Link href={`/services/${service.slug}`} className="underline">
-                {service.title}
-              </Link>
-            </h2>
-            <p className="mt-1 text-sm text-gray-600">
-              {service.shortDescription}
-            </p>
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
+  return <EditorialPage eyebrow="CAPABILITIES / 01" title={<>The work behind<br /><em>the wow.</em></>} intro="A focused set of capabilities to take a brand from unknown to unmissable. Choose the piece you need, or bring us the whole brief."><section className="container-shell editorial-section"><div className="service-list editorial-service-list">{services.map((service, index) => <Link key={service.slug} href={`/services/${service.slug}`} className="service-row"><span className="service-number">0{index + 1}</span><div><h2>{service.title}</h2><p>{service.shortDescription}</p></div><span className="service-arrow" aria-hidden>↗</span></Link>)}</div></section><EditorialCta /></EditorialPage>;
 }

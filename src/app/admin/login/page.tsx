@@ -45,8 +45,9 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <section>
-      <h1 className="text-3xl font-semibold">Admin Login</h1>
+    <section className="container-shell py-20 md:py-28">
+      <p className="section-kicker accent-text">PRIVATE WORKSPACE</p>
+      <h1 className="display-heading mt-5 max-w-3xl">Admin Login</h1>
       <p className="mt-3 max-w-2xl text-gray-700">
         Sign in to manage contact submissions.
       </p>
