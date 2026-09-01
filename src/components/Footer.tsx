@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { navRoutes } from "@/lib/footer-links";
+import { legalRoutes, navRoutes } from "@/lib/footer-links";
 
 export default function Footer() {
   return (
@@ -26,6 +26,9 @@ export default function Footer() {
       </div>
       <div className="container-shell flex flex-col gap-3 border-t border-border py-5 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
         <p>© {new Date().getFullYear()} Heek-E. All rights reserved.</p>
+        <nav aria-label="Legal" className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          {legalRoutes.map((route) => <Link key={route.href} href={route.href} className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">{route.label}</Link>)}
+        </nav>
         <p>Built for brands ready to be remembered.</p>
       </div>
     </footer>

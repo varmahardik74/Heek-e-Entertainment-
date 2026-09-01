@@ -13,11 +13,8 @@ export const navRoutes: SiteRoute[] = [
   { href: "/contact", label: "Contact" },
 ];
 
-export const footerRoutes: SiteRoute[] = [
-  ...navRoutes,
+export const legalRoutes: SiteRoute[] = [
   { href: "/privacy-policy", label: "Privacy Policy" },
   { href: "/terms", label: "Terms" },
   { href: "/fulfillment-policy", label: "Fulfillment Policy" },
-  { href: "/services/example", label: "Service Detail" },
-  { href: "/admin/login", label: "Admin Login" },
 ];

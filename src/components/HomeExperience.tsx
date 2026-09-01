@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { Reveal } from "@/components/Reveal";
 import { services } from "@/lib/services";
 import { caseStudies } from "@/lib/case-studies";
 
@@ -10,20 +11,6 @@ const faqs = [
   ["Can we start with a single campaign?", "Yes. A focused first campaign is a practical way to build momentum and find the right rhythm together."],
   ["How do you measure a program?", "We connect the creative work to your growth goals, from qualified awareness through signups and pipeline."],
 ];
-
-function Reveal({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) { node.classList.add("is-visible"); observer.disconnect(); }
-    }, { threshold: 0.15 });
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
-  return <div ref={ref} className={`reveal ${className}`}>{children}</div>;
-}
 
 function Count({ value, suffix = "" }: { value: number; suffix?: string }) {
   const [count, setCount] = useState(0);
@@ -60,11 +47,11 @@ export default function HomeExperience() {
 
     <section className="trust-strip"><Reveal className="container-shell"><p className="section-kicker">BUILT FOR BRANDS READY TO BE REMEMBERED</p><div className="logo-marquee"><div className="logo-track"><span>STRATEGY</span><span>CREATIVE</span><span>CAMPAIGNS</span><span>CONTENT</span><span>DISTRIBUTION</span><span>STRATEGY</span><span>CREATIVE</span><span>CAMPAIGNS</span><span>CONTENT</span><span>DISTRIBUTION</span></div></div></Reveal></section>
 
-    <section className="expert-section"><Reveal className="container-shell expert-layout"><div><p className="section-kicker accent-text">WHY HEEK-E</p><h2 className="display-heading">The SaaS<br /><em>Influencer</em><br />Experts</h2></div><div className="expert-note"><span className="marker">↳</span><p>We specialize in building influencer strategies that align with your growth goals. Whether you&apos;re looking to go viral, build awareness, get more signups, or add qualified leads to your pipeline.</p><Link href="/about" className="text-link">More about us <span>↗</span></Link></div></Reveal><div className="container-shell signal-row" aria-hidden="true"><span>STRATEGY</span><span>CREATIVE</span><span>DISTRIBUTION</span><span>RESULTS</span></div></section>
+    <section className="expert-section"><Reveal className="container-shell expert-layout"><div><p className="section-kicker accent-text">WHY HEEK-E</p><h2 className="display-heading">The SaaS<br /><em>Influencer</em><br />Experts</h2></div><div className="expert-note"><p><span className="marker">↳</span>We specialize in building influencer strategies that align with your growth goals. Whether you&apos;re looking to go viral, build awareness, get more signups, or add qualified leads to your pipeline.</p><Link href="/about" className="text-link">More about us <span>↗</span></Link></div></Reveal><div className="container-shell signal-row" aria-hidden="true"><span>STRATEGY</span><span>CREATIVE</span><span>DISTRIBUTION</span><span>RESULTS</span></div></section>
 
     <section className="services-section"><Reveal className="container-shell"><div className="split-heading"><div><p className="section-kicker">OUR SERVICES</p><h2 className="display-heading">How we help you<br /><em>win bigger deals</em></h2></div><p>From strategy to distribution, we build the system behind your next growth story.</p></div><div className="service-list">{services.map((service, index) => <Link href={`/services/${service.slug}`} className="service-row" key={service.slug}><span className="service-number">0{index + 1}</span><h3>{service.title}</h3><span className="service-description">{service.shortDescription}</span><span className="service-arrow" aria-hidden>↗</span></Link>)}</div></Reveal></section>
 
-    <section className="work-section"><Reveal className="container-shell"><div className="split-heading"><div><p className="section-kicker accent-text">SELECTED WORK</p><h2 className="display-heading">Ideas that<br /><em>move markets.</em></h2></div><Link href="/case-studies" className="text-link light-link">View case studies <span>↗</span></Link></div><div className="work-grid">{caseStudies.length ? caseStudies.slice(0, 3).map((study) => <article className="work-card" key={study.slug}><div className="work-art"><span>{study.title}</span><i aria-hidden>↗</i></div><p>CASE STUDY</p><h3>{study.title}</h3></article>) : <article className="work-card work-empty"><div className="work-art"><span>YOUR NEXT<br />BIG IDEA</span><i aria-hidden>✦</i></div><p>PORTFOLIO UPDATE</p><h3>Selected case studies are being prepared for launch.</h3></article>}</div></Reveal></section>
+    <section className="work-section"><Reveal className="container-shell"><div className="split-heading"><div><p className="section-kicker accent-text">SELECTED WORK</p><h2 className="display-heading">Ideas that<br /><em>move markets.</em></h2></div><Link href="/case-studies" className="text-link light-link">View case studies <span>↗</span></Link></div>{caseStudies.length ? <div className="work-grid">{caseStudies.slice(0, 3).map((study) => <article className="work-card" key={study.slug}><div className="work-art"><span>{study.title}</span><i aria-hidden>↗</i></div><p>CASE STUDY</p><h3>{study.title}</h3></article>)}</div> : <div className="work-stage"><div className="work-stage-art"><span>CASE STUDY INDEX / IN PROGRESS</span><b>The work comes<br />here when it&apos;s real.</b><i aria-hidden>✦</i></div><div className="work-stage-side"><div><p className="section-kicker accent-text">CURRENT INDEX</p><h3>Nothing fake.<br />All of it earned.</h3><p>This space is reserved for genuine client work — the strategy, the thinking, and the results. It fills as real projects complete.</p></div><div><div className="work-slot"><span>SLOT 01</span><i>RESERVED</i></div><div className="work-slot"><span>SLOT 02</span><i>RESERVED</i></div><div className="work-slot"><span>SLOT 03</span><i>RESERVED</i></div></div></div></div>}</Reveal></section>
 
     <section className="metrics-section"><Reveal className="container-shell"><p className="section-kicker">THE SIGNAL IS CLEAR</p><div className="metrics-grid"><div><strong><Count value={5} suffix="+" /></strong><p>ways to make your brand impossible to ignore</p></div><div><strong><Count value={1} /></strong><p>focused partner for strategy, content and growth</p></div><div><strong>∞</strong><p>room to turn the right idea into momentum</p></div></div></Reveal></section>
 
