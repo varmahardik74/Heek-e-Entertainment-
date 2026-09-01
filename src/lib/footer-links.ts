@@ -11,7 +11,6 @@ export const navRoutes: SiteRoute[] = [
   { href: "/about", label: "About" },
   { href: "/pricing", label: "Pricing" },
   { href: "/contact", label: "Contact" },
-  { href: "/admin", label: "Admin" },
 ];
 
 export const footerRoutes: SiteRoute[] = [
