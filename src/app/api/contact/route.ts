@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { randomUUID } from "node:crypto";
 import { getSupabaseClient } from "@/lib/supabase";
+import { sendContactNotification } from "@/lib/notify";
 
 const contactSchema = z.object({
   name: z.string().min(1).max(200),
@@ -76,6 +77,25 @@ export async function POST(req: NextRequest) {
         { error: "Something went wrong. Please try again later." },
         { status: 500 }
       );
+    }
+
+    // Submission is saved to Supabase (source of truth). Only now attempt to
+    // send the notification email. Email success/failure must NOT affect the
+    // saved submission or the API response: the user already got a 201-worthy
+    // insertion, so we return 201 regardless and only log a server-side error
+    // if the notification could not be sent (no rollback, no resubmit risk).
+    const emailResult = await sendContactNotification({
+      name,
+      email,
+      message,
+      id,
+      submittedAt: new Date().toISOString(),
+    });
+
+    if (!emailResult.ok) {
+      // Log useful non-sensitive info server-side. Suppress detailed errors in
+      // the client response.
+      console.error("Contact notification email not sent:", emailResult.error);
     }
 
     return NextResponse.json({ id }, { status: 201 });
