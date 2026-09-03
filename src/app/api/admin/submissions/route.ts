@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { isAdminUser } from "@/lib/admin";
 
 export async function GET() {
   try {
@@ -11,6 +12,11 @@ export async function GET() {
 
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Admin-only: authenticated but not the configured admin -> 403.
+    if (!isAdminUser(user)) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     const { data, error } = await supabase

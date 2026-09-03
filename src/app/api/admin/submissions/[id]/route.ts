@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { isAdminUser } from "@/lib/admin";
 
 const statusSchema = z.object({
   status: z.enum(["new", "contacted", "closed"]),
@@ -39,6 +40,11 @@ export async function PATCH(
 
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Admin-only: authenticated but not the configured admin -> 403.
+    if (!isAdminUser(user)) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     const { data, error } = await supabase

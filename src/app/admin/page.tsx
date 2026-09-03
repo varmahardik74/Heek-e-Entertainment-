@@ -21,10 +21,16 @@ const STATUS_OPTIONS: SubmissionStatus[] = ["new", "contacted", "closed"];
 type LoadState = "loading" | "loaded" | "error" | "unauthorized";
 
 const statusStyles: Record<SubmissionStatus, string> = {
-  new: "bg-blue-50 text-blue-800",
-  contacted: "bg-amber-50 text-amber-800",
-  closed: "bg-gray-100 text-gray-600",
+  new: "border-accent/60 bg-accent/10 text-accent",
+  contacted: "border-primary/60 bg-primary/10 text-primary",
+  closed: "border-border bg-muted/40 text-muted-foreground",
 };
+
+const logoutClass =
+  "inline-flex cursor-pointer items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold text-foreground transition hover:border-primary hover:text-primary active:scale-[.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:cursor-not-allowed disabled:opacity-60";
+
+const selectClass =
+  "cursor-pointer rounded-lg border border-border bg-surface px-3 py-2 text-sm font-medium text-foreground outline-none transition focus:border-accent focus:ring-2 focus:ring-accent focus:outline-none disabled:cursor-not-allowed disabled:opacity-60";
 
 export default function AdminPage() {
   const router = useRouter();
@@ -34,10 +40,7 @@ export default function AdminPage() {
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [actionError, setActionError] = useState("");
 
-  const getSupabase = useCallback(
-    () => createSupabaseBrowserClient(),
-    []
-  );
+  const getSupabase = useCallback(() => createSupabaseBrowserClient(), []);
 
   const fetchSubmissions = useCallback(async (): Promise<
     | { state: "loaded"; submissions: Submission[] }
@@ -136,16 +139,17 @@ export default function AdminPage() {
   // Unauthorized: session missing or expired.
   if (loadState === "unauthorized") {
     return (
-      <section>
-        <h1 className="text-3xl font-semibold">Admin</h1>
-        <p className="mt-3 text-gray-700">
-          Your session has expired. Please sign in again.
+      <section className="container-shell py-20 text-center md:py-28">
+        <p className="section-kicker accent-text">PRIVATE WORKSPACE</p>
+        <h1 className="display-heading mt-5">Session expired</h1>
+        <p className="mx-auto mt-4 max-w-md text-muted-foreground">
+          Your session has ended. Please sign in again to continue.
         </p>
         <a
           href="/admin/login"
-          className="mt-4 inline-block rounded bg-black px-4 py-2 text-sm text-white"
+          className="mt-8 inline-flex cursor-pointer items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground transition hover:-translate-y-0.5 hover:bg-accent hover:text-accent-foreground active:translate-y-0 active:scale-[.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
-          Sign in
+          Sign in <span aria-hidden>→</span>
         </a>
       </section>
     );
@@ -153,16 +157,13 @@ export default function AdminPage() {
 
   return (
     <section className="container-shell py-12 md:py-20">
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-semibold">Admin</h1>
-          <p className="mt-1 text-gray-700">Contact submissions</p>
+          <p className="section-kicker accent-text">PRIVATE WORKSPACE</p>
+          <h1 className="display-heading mt-4 !text-4xl md:!text-5xl">Admin</h1>
+          <p className="mt-2 text-muted-foreground">Contact submissions</p>
         </div>
-        <button
-          type="button"
-          onClick={handleLogout}
-          className="rounded border border-gray-300 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50"
-        >
+        <button type="button" onClick={handleLogout} className={logoutClass}>
           Log out
         </button>
       </div>
@@ -170,66 +171,83 @@ export default function AdminPage() {
       {actionError && (
         <p
           role="alert"
-          className="mt-4 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-800"
+          className="mt-5 rounded-lg border border-red-400/40 bg-red-950/30 p-3 text-sm text-red-300"
         >
           {actionError}
         </p>
       )}
 
-      <div className="mt-6">
+      <div className="mt-8">
         {loadState === "loading" && (
-          <p className="text-gray-600">Loading submissions…</p>
+          <p className="text-muted-foreground" aria-live="polite">
+            Loading submissions…
+          </p>
         )}
 
         {loadState === "error" && (
           <p
             role="alert"
-            className="rounded border border-red-200 bg-red-50 p-3 text-sm text-red-800"
+            className="rounded-lg border border-red-400/40 bg-red-950/30 p-3 text-sm text-red-300"
           >
             {loadError}
           </p>
         )}
 
         {loadState === "loaded" && submissions.length === 0 && (
-          <p className="rounded border border-gray-200 p-4 text-gray-600">
-            No submissions yet. They&rsquo;ll appear here once the contact
-            form is used.
+          <p className="rounded-lg border border-border bg-card p-5 text-muted-foreground">
+            No submissions yet. They&rsquo;ll appear here once the contact form
+            is used.
           </p>
         )}
 
         {loadState === "loaded" && submissions.length > 0 && (
-          <ul className="space-y-4">
+          <div className="space-y-4">
             {submissions.map((submission) => (
-              <li
+              <article
                 key={submission.id}
-                className="rounded border border-gray-200 p-4"
+                className="rounded-[1.25rem] border border-border bg-card p-5"
               >
-                <div className="flex flex-wrap items-start justify-between gap-2">
+                <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
-                    <h2 className="font-semibold">{submission.name}</h2>
-                    <p className="text-sm text-gray-600">{submission.email}</p>
-                    {submission.company && (
-                      <p className="text-sm text-gray-600">
-                        {submission.company}
-                      </p>
-                    )}
+                    <h2 className="text-lg font-bold text-foreground">
+                      {submission.name}
+                    </h2>
+                    <div className="mt-1 space-y-0.5 text-sm">
+                      <a
+                        href={`mailto:${submission.email}`}
+                        className="text-muted-foreground transition hover:text-accent"
+                      >
+                        {submission.email}
+                      </a>
+                      {submission.company && (
+                        <p className="text-muted-foreground">
+                          {submission.company}
+                        </p>
+                      )}
+                    </div>
                   </div>
-                  <time className="text-xs text-gray-400">
+                  <time
+                    dateTime={submission.created_at}
+                    className="text-xs text-muted-foreground"
+                  >
                     {new Date(submission.created_at).toLocaleString()}
                   </time>
                 </div>
 
-                <p className="mt-2 whitespace-pre-wrap text-sm text-gray-700">
+                <p className="mt-4 whitespace-pre-wrap rounded-lg border border-border bg-surface/50 p-3.5 text-sm leading-relaxed text-muted-foreground">
                   {submission.message}
                 </p>
 
-                <div className="mt-3 flex items-center gap-3">
+                <div className="mt-4 flex flex-wrap items-center gap-3">
                   <span
-                    className={`rounded px-2 py-0.5 text-xs font-medium capitalize ${statusStyles[submission.status]}`}
+                    className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold capitalize ${statusStyles[submission.status]}`}
                   >
                     {submission.status}
                   </span>
-                  <label className="sr-only" htmlFor={`status-${submission.id}`}>
+                  <label
+                    className="sr-only"
+                    htmlFor={`status-${submission.id}`}
+                  >
                     Update status
                   </label>
                   <select
@@ -242,7 +260,7 @@ export default function AdminPage() {
                         e.target.value as SubmissionStatus
                       )
                     }
-                    className="rounded border border-gray-300 px-2 py-1 text-sm disabled:opacity-50"
+                    className={selectClass}
                   >
                     {STATUS_OPTIONS.map((option) => (
                       <option key={option} value={option}>
@@ -251,12 +269,14 @@ export default function AdminPage() {
                     ))}
                   </select>
                   {updatingId === submission.id && (
-                    <span className="text-xs text-gray-500">Updating…</span>
+                    <span className="text-xs text-muted-foreground" aria-live="polite">
+                      Updating…
+                    </span>
                   )}
                 </div>
-              </li>
+              </article>
             ))}
-          </ul>
+          </div>
         )}
       </div>
     </section>
