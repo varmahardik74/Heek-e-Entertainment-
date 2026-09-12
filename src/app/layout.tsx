@@ -10,6 +10,11 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 export const metadata: Metadata = {
   title: { default: "Heek-E | Make your brand unmissable", template: "%s | Heek-E" },
   description: "Heek-E builds the strategy, creative, and campaigns that help ambitious brands get noticed.",
+  openGraph: {
+    type: "website",
+    siteName: "Heek-E",
+    locale: "en_US",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
