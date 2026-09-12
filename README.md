@@ -25,9 +25,6 @@ It also includes a protected admin dashboard for managing contact submissions.
 - Responsive marketing website
 - Home page
 - Services overview
-- Individual service detail pages
-- Case studies
-- Testimonials
 - About page
 - Contact page
 
@@ -59,11 +56,8 @@ src/
 │   ├── api/
 │   │   ├── admin/
 │   │   └── contact/
-│   ├── case-studies/
 │   ├── contact/
 │   ├── services/
-│   │   └── [slug]/
-│   ├── testimonials/
 │   ├── loading.tsx
 │   ├── not-found.tsx
 │   ├── globals.css

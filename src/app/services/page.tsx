@@ -31,9 +31,8 @@ export default function ServicesPage() {
         <div className="service-index">
           <div className="service-list editorial-service-list">
             {services.map((service, index) => (
-              <Link
+              <div
                 key={service.slug}
-                href={`/services/${service.slug}`}
                 className="service-row"
               >
                 <span className="service-number">0{index + 1}</span>
@@ -44,7 +43,7 @@ export default function ServicesPage() {
                 <span className="service-arrow" aria-hidden>
                   ↗
                 </span>
-              </Link>
+              </div>
             ))}
           </div>
           <aside className="service-rail">

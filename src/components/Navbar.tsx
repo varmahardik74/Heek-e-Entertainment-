@@ -10,7 +10,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-20 border-b bg-background/90 backdrop-blur">
       <nav aria-label="Primary" className="container-shell flex min-h-20 items-center justify-between gap-6">
-        <Link href="/" className="text-xl font-black tracking-[-.08em]" onClick={() => setOpen(false)}>heek<span className="text-primary">-e</span></Link>
+        <Link href="/" className="text-xl font-black tracking-[-.08em]" onClick={() => setOpen(false)}>Heek<span className="text-primary">-e</span></Link>
         <div className="hidden items-center gap-7 md:flex">
           {headerRoutes.map((route) => <Link key={route.href} href={route.href} className="text-sm font-medium text-muted-foreground transition hover:text-foreground">{route.label}</Link>)}
           <Link href="/contact" className="rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground transition hover:-translate-y-0.5">Start a conversation <span aria-hidden>↗</span></Link>
